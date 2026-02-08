@@ -64,11 +64,11 @@ VERILATOR_FLAGS := \
 
 all: build run
 
-build:
-	$(VERILATOR) $(VERILATOR_FLAGS) --build
+# build:
+# 	$(VERILATOR) $(VERILATOR_FLAGS) --build
 
-run:
-	./$(OBJ_DIR)/V$(TOP)
+# run:
+# 	./$(OBJ_DIR)/V$(TOP)
 
 pca: build_pca run_pca
 

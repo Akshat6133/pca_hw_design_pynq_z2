@@ -31,11 +31,19 @@ struct Sample {
 };
 
 static int16_t sat_round_q12(int64_t acc) {
-    int64_t rounded = (acc + (1LL << (FRAC - 1))) >> FRAC;
+    // EXACT match to RTL:
+    // shifted = acc + (1 << (FRAC-1));
+    // rounded = shifted >>> FRAC;
+
+    int64_t shifted = acc + (1LL << (FRAC - 1));
+    int64_t rounded = shifted >> FRAC;   // arithmetic shift
+
     if (rounded > 32767) return 32767;
     if (rounded < -32768) return -32768;
     return static_cast<int16_t>(rounded);
 }
+
+
 
 static std::vector<Sample> load_samples_or_default(const std::string& path) {
     std::ifstream in(path);

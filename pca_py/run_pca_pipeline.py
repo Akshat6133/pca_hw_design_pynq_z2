@@ -34,8 +34,8 @@ X_q = [[float_to_fixed(v, FRAC) for v in x] for x in X_test]
 Y_q = [pca_fixed_infer(x, mu_q, W_q, FRAC) for x in X_q]
 
 # Export
-export_verilog(mu_q, W_q, "../rtl/pca_params.svh")
-export_cpp_vectors(X_q, Y_q, "../tb/pca_vectors.h")
+export_verilog(mu_q, W_q, "./../verilog_prj/rtl/pca_params.svh")
+export_cpp_vectors(X_q, Y_q, "./../verilog_prj/sim/pca_vectors.h")
 
 print("✔ PCA trained")
 print("✔ Fixed-point parameters exported")

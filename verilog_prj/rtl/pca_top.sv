@@ -23,17 +23,17 @@ module pca_top #(
     acc_t y_comb [0:K-1];
     logic signed [OUT_W-1:0] y_q [0:K-1];
     // function automatic logic signed [COEF_W-1:0] mu_coef(input int idx);
-        begin
-            // Mean values from Iris-style offline training, Q4.12 format.
-            case (idx)
-                0: mu_coef = 16'sd23934;
-                1: mu_coef = 16'sd12524;
-                2: mu_coef = 16'sd15393;
-                3: mu_coef = 16'sd4912;
-                default: mu_coef = '0;
-            endcase
-        end
-    endfunction
+        // begin
+    //         // Mean values from Iris-style offline training, Q4.12 format.
+    //         case (idx)
+    //             0: mu_coef = 16'sd23934;
+    //             1: mu_coef = 16'sd12524;
+    //             2: mu_coef = 16'sd15393;
+    //             3: mu_coef = 16'sd4912;
+    //             default: mu_coef = '0;
+    //         endcase
+    //     end
+    // endfunction
     
 //PCA weight matrix (W)
     // function automatic logic signed [COEF_W-1:0] w_coef(input int comp, input int feat);
@@ -63,6 +63,8 @@ module pca_top #(
     //     end
     // endfunction
 
+
+    // -------- Fixed-point rounding ----------
     function automatic logic signed [OUT_W-1:0] sat_round_q(
         input logic signed [ACC_W-1:0] acc
     );
@@ -85,11 +87,13 @@ module pca_top #(
         end
     endfunction
 
+    // -------- Unpack input ----------
     always_comb begin
         for (int d = 0; d < D; d = d + 1)
             x_vec[d] = x_flat[d*IN_W +: IN_W];
     end
-
+ 
+    // -------- PCA MAC ----------
     always_comb begin
         logic signed [IN_W:0] centered;
         logic signed [IN_W+COEF_W:0] mult;
@@ -104,6 +108,7 @@ module pca_top #(
         end
     end
 
+    // -------- Output register ----------
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             out_valid <= 1'b0;
