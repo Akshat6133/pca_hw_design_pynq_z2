@@ -1,0 +1,8 @@
+# Iris-like feature vectors in Q4.12 fixed point:
+# [sepal_length, sepal_width, petal_length, petal_width]
+20890 14336 5734 819
+20070 12288 5734 819
+25395 13926 22118 9421
+24166 12288 20890 7373
+24576 9011 16384 4096
+22528 10240 16384 5325
